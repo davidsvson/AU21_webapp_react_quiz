@@ -4,22 +4,29 @@ const Game = ({ answeredCorrectly , showResult }) => {
     const questions = getQuestions();
     const [currentQuestion, setQurrentQuestion ] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [decided, setDecided] = useState(false);
 
     let q = questions[currentQuestion];
 
     const handleDecided = () => {
+        setDecided(true);
         if (selectedAnswer === q.correct) {
             answeredCorrectly();
-        } 
-        if( currentQuestion < questions.length - 1 ) {
-            setQurrentQuestion(currentQuestion + 1);
-        } else {
-            showResult();
-        }  
+        }
+        setTimeout(() => {
+            if( currentQuestion < questions.length - 1 ) {
+                setQurrentQuestion(currentQuestion + 1);
+                setSelectedAnswer(null);
+                setDecided(false);
+            } else {
+                showResult();
+            }  
+        }, 1000); 
     }
 
     const options = q.answers.map((answer, index) => (
-        <p className={"option"} key={index}>
+        <p className={"option" + ((decided && index === q.correct) ? ' correct' : '')} 
+            key={index}>
             <label>
                 <input type="radio" name="question" onClick={() => setSelectedAnswer(index)} /> {answer}
             </label>
@@ -28,6 +35,7 @@ const Game = ({ answeredCorrectly , showResult }) => {
 
     return (
         <section>
+            <h2>Fråga {currentQuestion} av {questions.length}</h2>
             <h3>{q.question}</h3>
             {options}
             <button onClick={handleDecided}>Answer</button>
