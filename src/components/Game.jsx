@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Game = ({ answeredCorrectly , showResult }) => {
+
+
     const questions = getQuestions();
     //const [currentQuestion, setQurrentQuestion ] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [decided , setDecided ] = useState(false);
 
     let navigate = useNavigate();
     const params = useParams();
@@ -19,18 +22,24 @@ const Game = ({ answeredCorrectly , showResult }) => {
     let q = questions[currentQuestion - 1];
 
     const handleDecided = () => {
+        setDecided(true);
         if (selectedAnswer === q.correct) {
             answeredCorrectly();
-        } 
-        if( currentQuestion < questions.length) {
-          navigate("/game/"+(currentQuestion + 1));
-        } else {
-           navigate("/result"); 
-        }  
+        }
+        
+        setTimeout(() => {
+            setDecided(false);
+            if( currentQuestion < questions.length) {
+                navigate("/game/"+(currentQuestion + 1));
+            } else {
+                navigate("/result"); 
+            }
+        }, 1000); 
+
     }
 
     const options = q.answers.map((answer, index) => (
-        <p className={"option"} key={index}>
+        <p className={"option" + ((decided && index === q.correct) ? ' correct' : '')} key={index}>
             <label>
                 <input type="radio" name="question" onClick={() => setSelectedAnswer(index)} /> {answer}
             </label>
@@ -41,7 +50,7 @@ const Game = ({ answeredCorrectly , showResult }) => {
         <section>
             <h3>{q.question}</h3>
             {options}
-            <button onClick={handleDecided}>Answer</button>
+            <button disabled={decided} onClick={handleDecided}>Answer</button>
         </section>
     )
 }

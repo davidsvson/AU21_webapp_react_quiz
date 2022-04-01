@@ -8,28 +8,11 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   
- // const WELCOME = 'welcome', GAME = 'game', RESULT = 'result';
- // const [currentScreen, setCurrentScreen] = useState(WELCOME);
   const [score , setScore] = useState(0);
-
-  //let content = null;
 
   const restartQuiz = () => {
     setScore(0);
-   // setCurrentScreen(GAME);
   }
-
-  // switch(currentScreen ) {
-  //   case WELCOME :
-  //     content = <Welcome nextScreen={ () => setCurrentScreen(GAME) } /> 
-  //     break;
-  //   case GAME : 
-  //     content = <Game answeredCorrectly={() => setScore(score + 1)} 
-  //                     showResult={() => setCurrentScreen(RESULT) }/>
-  //     break;
-  //   default:
-  //     content = <Result score={score} restartQuiz={restartQuiz} />
-  // }
 
   return (
     <div className="App">
@@ -37,7 +20,6 @@ function App() {
        <h1>Quiz</h1>
       </header>
       <main>
-       <Router>
         <Routes>
           <Route exact path="/" element={
             <Welcome />
@@ -52,7 +34,6 @@ function App() {
              <Result score={score} restartQuiz={restartQuiz} />
           } />
         </Routes>
-       </Router>
       </main>
     </div>
   );
