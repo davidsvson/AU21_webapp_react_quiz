@@ -45,6 +45,9 @@ function App() {
           <Route path="/game" element={
             <Game answeredCorrectly={() => setScore(score + 1)} />
           } />
+          <Route path="/game/:currentquestion" element={
+            <Game answeredCorrectly={() => setScore(score + 1)} />
+          } />
           <Route path="/result" element={
              <Result score={score} restartQuiz={restartQuiz} />
           } />

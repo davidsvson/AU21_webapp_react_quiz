@@ -1,20 +1,31 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Game = ({ answeredCorrectly , showResult }) => {
     const questions = getQuestions();
-    const [currentQuestion, setQurrentQuestion ] = useState(0);
+    //const [currentQuestion, setQurrentQuestion ] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
 
-    let q = questions[currentQuestion];
+    let navigate = useNavigate();
+    const params = useParams();
+
+    let currentQuestion = 1;
+    if ('currentquestion' in params ) {
+        if (params.currentquestion > 0 && params.currentquestion <= questions.length) {
+            currentQuestion = Number(params.currentquestion);
+        }
+    }
+
+    let q = questions[currentQuestion - 1];
 
     const handleDecided = () => {
         if (selectedAnswer === q.correct) {
             answeredCorrectly();
         } 
-        if( currentQuestion < questions.length - 1 ) {
-            setQurrentQuestion(currentQuestion + 1);
+        if( currentQuestion < questions.length) {
+          navigate("/game/"+(currentQuestion + 1));
         } else {
-            showResult();
+           navigate("/result"); 
         }  
     }
 
